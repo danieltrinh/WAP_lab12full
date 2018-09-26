@@ -12,5 +12,6 @@
   </head>
   <body>
   <a href="/login">Login</a>
+  <a href="/product">Product</a>
   </body>
 </html>
