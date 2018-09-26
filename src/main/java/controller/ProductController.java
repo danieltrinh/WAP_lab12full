@@ -1,14 +1,15 @@
 package controller;
 
 import com.example.dao.ProductDao;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Product;
+import model.ShoppingCart;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class ProductController extends HttpServlet {
 
     com.example.dao.ProductDao productDao = new ProductDao();
 
-    ObjectMapper mapper = new ObjectMapper();
+//    ObjectMapper mapper = new ObjectMapper();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,8 +31,31 @@ public class ProductController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException{
-        String productJson = req.getParameter("product");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        String productId = req.getParameter("product_id");
 
+//        Product requestedProduct = (Product) mapper.readValue(productJson, Product.class);
+
+        Product requestedProduct = productDao.getProductById(Integer.parseInt(productId));
+        System.out.println(requestedProduct);
+
+        HttpSession session = req.getSession();
+        ShoppingCart sp  = (ShoppingCart) session.getAttribute("shoppingCart");
+
+        if(sp == null)
+            sp = new ShoppingCart();
+        sp.addProductToShoppingCart(requestedProduct);
+        session.setAttribute("shoppingCart", sp);
+
+        try{
+            String ids = "";
+            for(Product p :  ((ShoppingCart) session.getAttribute("shoppingCart")).getProducts())
+                ids += p.getName() + ";";
+            resp.getWriter().println(ids);
+//            resp.getWriter().println(mapper.writeValueAsString(requestedProduct));
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,21 +1,10 @@
 package controller;
 
-import dao.UserDao;
+import com.example.dao.ProductDao;
 
 public class TestMain {
     public static void main(String[] args) {
-        String username = "Daniel";
-        String password = "123";
-
-        UserDao userDao = new UserDao();
-
-        boolean userExist = false;
-        if(userDao.getAllUserMap().containsKey(username))
-        {
-            if(userDao.getUserByUsername(username).getPassword().equals(password))
-                userExist = true;
-        }
-
-        System.out.println(userExist);
+        com.example.dao.ProductDao productDao = new ProductDao();
+        System.out.println(productDao.getProductById(1));
     }
 }

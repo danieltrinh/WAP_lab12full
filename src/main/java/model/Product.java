@@ -15,6 +15,15 @@ public class Product {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                '}';
+    }
+
     public void setName(String name) {
         this.name = name;
     }

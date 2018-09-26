@@ -13,5 +13,6 @@
   <body>
   <a href="/login">Login</a>
   <a href="/product">Product</a>
+  <div>${mes}</div>
   </body>
 </html>
